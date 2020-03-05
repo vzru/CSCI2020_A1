@@ -120,7 +120,7 @@ class MultiCircle extends Pane{
                         tc[currentInArray].setX(cx + 0);
                         tc[currentInArray].setY(cy + tr);
 
-                        int prev = currentInArray <= 0 ? currentInArray - 1 : cc.length - 1;
+                        int prev = currentInArray > 0 ? currentInArray - 1 : cc.length - 1;
 
                         lc[prev].setEndX(cx + 0);
                         lc[prev].setEndY(cy + br);
