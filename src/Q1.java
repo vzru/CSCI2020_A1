@@ -26,6 +26,7 @@ public class Q1  extends Application {
         }
 
         Scene scene = new Scene(pane);
+        stage.setTitle("Cards");
         stage.setScene(scene);
         stage.show();
     }

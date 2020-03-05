@@ -25,9 +25,8 @@ public class Q3  extends Application {
         mainCircle.bigC.setFill(Color.WHITE);
 
         Scene scene = new Scene(mainCircle, 600, 600);
+        stage.setTitle("Circle");
         stage.setScene(scene);
-
-
         stage.show();
     }
 
@@ -101,10 +100,8 @@ class MultiCircle extends Pane{
 
             cc[i].setOnMouseDragged(e -> {
                 if (currentlyMoving == null) {
-                    //if (((ClickableCircle) e.getSource()).CheckIfInside(e.getX(), e.getY())) {
-                        currentlyMoving = (ClickableCircle) e.getSource();
-                        currentInArray = ((ClickableCircle) e.getSource()).arrPos;
-                    //}
+                    currentlyMoving = (ClickableCircle) e.getSource();
+                    currentInArray = ((ClickableCircle) e.getSource()).arrPos;
                 }
 
                 if (currentlyMoving == e.getSource()) {

@@ -17,21 +17,26 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-        import java.io.FileNotFoundException;
-        import java.util.Scanner;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class Q4 extends Application {
     @Override
     public void start(Stage stage) throws Exception {
+        // Setting up the main pane
         BorderPane pane = new BorderPane();
 
+        // Setting up the bar chart
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
         BarChart chart = new BarChart(xAxis, yAxis);
         chart.setLegendVisible(false);
         chart.setCategoryGap(0);
         chart.setBarGap(1);
+        XYChart.Series letters = new XYChart.Series();
+        int[] alphabetCounter = new int[26]; // Counter for every occurences
 
+        // Setting up bottom nodes (Label, Textfield and Button)
         HBox inputs = new HBox(0);
         inputs.setAlignment(Pos.CENTER);
         inputs.setSpacing(5);
@@ -39,10 +44,17 @@ public class Q4 extends Application {
         path.setPrefWidth(400);
         Button btView = new Button("View");
 
-        XYChart.Series letters = new XYChart.Series();
+        inputs.getChildren().add(new Label("Filename:"));
+        inputs.getChildren().add(path);
+        inputs.getChildren().add(btView);
 
-        int[] alphabetCounter = new int[26];
+        // Fill default Bar CHart with default values
+        char c;
+        for(c = 'A'; c <= 'Z'; ++c) {
+            letters.getData().add(new XYChart.Data(String.valueOf(c), 0));
+        }
 
+        // Check for Enter Key Press
         path.setOnKeyPressed(new EventHandler<KeyEvent>()
         {
             @Override
@@ -50,6 +62,7 @@ public class Q4 extends Application {
             {
                 if (key.getCode().equals(KeyCode.ENTER))
                 {
+                    // read file from textfield input
                     java.io.File file = new java.io.File(path.getText());
                     Scanner input = null;
                     try {
@@ -57,9 +70,10 @@ public class Q4 extends Application {
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                    System.out.println("Read File");
 
+                    // Loop through every word in the file and increment the individually letter count
                     while(input.hasNext()) {
+                        // Convert all words to lower case
                         String line = input.next().toLowerCase();
 
                         alphabetCounter[0] += (int)line.chars().filter(ch -> ch == 'a').count();
@@ -90,6 +104,7 @@ public class Q4 extends Application {
                         alphabetCounter[25] += (int)line.chars().filter(ch -> ch == 'z').count();
                     }
 
+                    // Insert data into the bar chart
                     char c;
                     int counter = 0;
                     for(c = 'A'; c <= 'Z'; ++c) {
@@ -103,10 +118,11 @@ public class Q4 extends Application {
             }
         });
 
+        // Call action for the 'View' Button
         btView.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-
+                // read file from textfield input
                 java.io.File file = new java.io.File(path.getText());
                 Scanner input = null;
                 try {
@@ -116,7 +132,9 @@ public class Q4 extends Application {
                 }
                 System.out.println("Read File");
 
+                // Loop through every word in the file and increment the individually letter count
                 while(input.hasNext()) {
+                    // Convert all words to lower case
                     String line = input.next().toLowerCase();
 
                     alphabetCounter[0] += (int)line.chars().filter(ch -> ch == 'a').count();
@@ -147,6 +165,7 @@ public class Q4 extends Application {
                     alphabetCounter[25] += (int)line.chars().filter(ch -> ch == 'z').count();
                 }
 
+                // Insert Data into Bar Chart
                 char c;
                 int counter = 0;
                 for(c = 'A'; c <= 'Z'; ++c) {
@@ -159,21 +178,14 @@ public class Q4 extends Application {
             }
         });
 
-        char c;
-        for(c = 'A'; c <= 'Z'; ++c) {
-            letters.getData().add(new XYChart.Data(String.valueOf(c), 0));
-        }
-
+        // Add the data to the BarChart
         chart.getData().add(letters);
         VBox charts = new VBox(chart);
-
-        inputs.getChildren().add(new Label("Filename:"));
-        inputs.getChildren().add(path);
-        inputs.getChildren().add(btView);
 
         pane.setCenter(charts);
         pane.setBottom(inputs);
 
+        // Display Screen
         Scene scene = new Scene(pane);
         stage.setTitle("Histogram");
         stage.setScene(scene);
